@@ -5,11 +5,17 @@ import boto3
 from boto3.dynamodb.conditions import Key
 
 logger = logging.getLogger(__name__)
+
+# DynamoDB
 dynamodb = boto3.resource('dynamodb')
 table    = dynamodb.Table('linebot')
 
-# get userId of me
-masawai = os.environ.get('userId')
+#SSM
+ssm = boto3.client('ssm')
+access_token = ssm.get_parameter(Name='/linebot/access_token',WithDecryption=True)['Parameter']['Value']
+masawai = ssm.get_parameter(Name='/linebot/user_id',WithDecryption=True)['Parameter']['Value']
+mayu_list = ssm.get_parameter(Name='/linebot/mayu_list')['Parameter']['Value']
+masaya_list = ssm.get_parameter(Name='/linebot/masaya_list')['Parameter']['Value']
 
 def create_item(message_event=None):
     name = 'Masaya' if message_event['source']['userId'] == masawai else 'Mayu'

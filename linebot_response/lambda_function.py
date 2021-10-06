@@ -7,11 +7,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-accessToken = os.environ['accessToken']
 url = 'https://api.line.me/v2/bot/message/reply'
 headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + accessToken
+    'Authorization': 'Bearer ' + dynamo_action.access_token
 }
 
 def lambda_handler(event, context):

@@ -29,9 +29,6 @@ Resources:
       Code:
         S3Bucket: lambda-sample-code-bucket 
         S3Key: sample_code.zip
-      Environment: 
-        Variables:  
-          CHANGEME: CHANGEME
       FunctionName: linebot_response
       Handler: lambda_handler
       PackageType: Zip 
