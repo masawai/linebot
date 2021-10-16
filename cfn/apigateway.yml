@@ -6,13 +6,13 @@ Resources:
   LinebotRestApi:
     Type: AWS::ApiGateway::RestApi
     Properties:
+      ApiKeySourceType: "HEADER"
+      DisableExecuteApiEndpoint: false
       EndpointConfiguration:
         Types:
           - REGIONAL
+      Mode: overwrite
       Name: linebot_api 
-      Parameters:
-        CHANGEME: CHANGEME
-      # Policy: '{"JSON": "CHANGEME"}' # Optional
       Tags:
         - Key: Owner
           Value: Masaya
