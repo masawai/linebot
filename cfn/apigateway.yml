@@ -16,6 +16,13 @@ Resources:
       Tags:
         - Key: Owner
           Value: Masaya
+  
+  LinebotResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref LinebotRestApi
+      PathPart: line-resource
+      ParentId: !GetAtt LinebotRestApi.RootResourceId
 
 Outputs:
   LinebotRestApiRootResourceId:
