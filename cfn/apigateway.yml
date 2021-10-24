@@ -16,13 +16,29 @@ Resources:
       Tags:
         - Key: Owner
           Value: Masaya
-  
+          
   LinebotResource:
     Type: AWS::ApiGateway::Resource
     Properties:
       RestApiId: !Ref LinebotRestApi
       PathPart: line-resource
       ParentId: !GetAtt LinebotRestApi.RootResourceId
+
+  LinebotMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE 
+      HttpMethod: POST
+      Integration: 
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY 
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:linebot_response/invocations" 
+      MethodResponses:
+        - StatusCode: 200
+      RequestParameters:
+        "method.request.header.X-Line-Signature": true
+      ResourceId: !Ref LinebotResource
+      RestApiId: !Ref LinebotRestApi
 
 Outputs:
   LinebotRestApiRootResourceId:
