@@ -19,7 +19,7 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
         - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
         - arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess
-      RoleName: linebot_lambda_role 
+      RoleName: linebot_lambda_role
       Tags:
         - Key: Owner
           Value: Masaya
@@ -28,11 +28,11 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Code:
-        S3Bucket: lambda-sample-code-bucket 
+        S3Bucket: lambda-sample-code-bucket
         S3Key: sample_code.zip
       FunctionName: linebot_response
       Handler: lambda_handler
-      PackageType: Zip 
+      PackageType: Zip
       Role: !GetAtt LinebotRole.Arn
       Runtime: python3.8
       Tags:
@@ -42,4 +42,3 @@ Resources:
 Outputs:
   LinebotRoleArn:
     Value: !GetAtt LinebotRole.Arn
-
