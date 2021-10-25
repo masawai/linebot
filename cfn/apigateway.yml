@@ -6,17 +6,17 @@ Resources:
   LinebotRestApi:
     Type: AWS::ApiGateway::RestApi
     Properties:
-      ApiKeySourceType: "HEADER"
+      ApiKeySourceType: HEADER
       DisableExecuteApiEndpoint: false
       EndpointConfiguration:
         Types:
           - REGIONAL
       Mode: overwrite
-      Name: linebot_api 
+      Name: linebot_api
       Tags:
         - Key: Owner
           Value: Masaya
-          
+
   LinebotResource:
     Type: AWS::ApiGateway::Resource
     Properties:
@@ -27,20 +27,44 @@ Resources:
   LinebotMethod:
     Type: AWS::ApiGateway::Method
     Properties:
-      AuthorizationType: NONE 
+      AuthorizationType: NONE
       HttpMethod: POST
-      Integration: 
+      Integration:
         IntegrationHttpMethod: POST
-        Type: AWS_PROXY 
-        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:linebot_response/invocations" 
+        Type: AWS_PROXY
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:linebot_response/invocations"
       MethodResponses:
         - StatusCode: 200
       RequestParameters:
-        "method.request.header.X-Line-Signature": true
+        method.request.header.X-Line-Signature: true
       ResourceId: !Ref LinebotResource
+      RestApiId: !Ref LinebotRestApi
+
+  LinebotStage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      CacheClusterEnabled: false
+      CacheClusterSize: "0.5"
+      DeploymentId: !Ref LinebotDeployment
+      MethodSettings:
+        - HttpMethod: '*'
+          LoggingLevel: ERROR
+          MetricsEnabled: false
+          ResourcePath: /*
+          ThrottlingBurstLimit: 1
+          ThrottlingRateLimit: 1
+      RestApiId: !Ref LinebotRestApi
+      StageName: v1
+      Tags:
+        - Key: Owner
+          Value: Masaya
+      TracingEnabled: false
+
+  LinebotDeployment:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
       RestApiId: !Ref LinebotRestApi
 
 Outputs:
   LinebotRestApiRootResourceId:
     Value: !GetAtt LinebotRestApi.RootResourceId
-
