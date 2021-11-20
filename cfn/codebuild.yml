@@ -7,6 +7,37 @@ Parameters:
     Type: String
 
 Resources:
+  LinebotPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Path: /
+      ManagedPolicyName: CodeBuildBasePolicy
+      PolicyDocument: 
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: '*'
+            Resource: '*'
+  LinebotRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - codebuild.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSLambda_FullAccess
+        - !Ref LinebotPolicy
+      RoleName: !Sub ${ProjectNameParameter}_codebuild_role
+      Tags:
+        - Key: Owner
+          Value: Masaya
+  
   LinebotProject:
     Type: AWS::CodeBuild::Project
     Properties:
@@ -38,7 +69,7 @@ Resources:
           Status: DISABLED
       Name: !Sub ${ProjectNameParameter}
       QueuedTimeoutInMinutes: 480
-      ServiceRole: !Sub "arn:aws:iam::${AWS::AccountId}:role/service-role/codebuild-linebot_response-service-role"
+      ServiceRole: !GetAtt LinebotRole.Arn
       Source:
         GitCloneDepth: 1 
         GitSubmodulesConfig: 
