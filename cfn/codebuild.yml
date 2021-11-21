@@ -57,7 +57,7 @@ Resources:
     Properties:
       Artifacts:
         EncryptionDisabled: false 
-        Location: !Sub codebuild-${AWS::AccountId}-output-bucket
+        Location: !ImportValue CodeBuildOutputBucketName
         Name: !Sub ProjectNameParameter
         NamespaceType: NONE
         OverrideArtifactName: false
