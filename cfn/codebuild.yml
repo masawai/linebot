@@ -43,7 +43,7 @@ Resources:
     Properties:
       Artifacts:
         EncryptionDisabled: false 
-        Location: !Sub "codebuild-${AWS::AccountId}-output-bucket"
+        Location: !Sub codebuild-${AWS::AccountId}-output-bucket
         Name: !Sub ProjectNameParameter
         NamespaceType: NONE
         OverrideArtifactName: false
@@ -54,7 +54,7 @@ Resources:
       Cache: 
         Type: NO_CACHE
       ConcurrentBuildLimit: 1 
-      EncryptionKey: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:alias/aws/s3"
+      EncryptionKey: !Sub arn:aws:kms:${AWS::Region}:${AWS::AccountId}:alias/aws/s3
       Environment:
         ComputeType: BUILD_GENERAL1_SMALL
         Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0-21.04.23
