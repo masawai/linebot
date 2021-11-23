@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 # DynamoDB
 dynamodb = boto3.resource('dynamodb')
-table    = dynamodb.Table('linebot')
+table    = dynamodb.Table(os.environ.get('tablename', 'linebot'))
 
 #SSM
 ssm = boto3.client('ssm')
