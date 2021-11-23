@@ -28,7 +28,7 @@ Resources:
         - Key: Owner
           Value: Masaya
 
-  LinebotResponse:
+  LinebotFunction:
     Type: AWS::Lambda::Function
     Properties:
       Code:
@@ -43,11 +43,22 @@ Resources:
         - Key: Owner
           Value: Masaya
 
+  LinebotLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt LinebotFunction.Arn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+
 Outputs:
   LinebotRoleArn:
     Value: !GetAtt LinebotRole.Arn
-
-  LinebotResponseArn:
-    Value: !GetAtt LinebotResponse.Arn
+  LinebotFunctionArn:
+    Value: !GetAtt LinebotFunction.Arn
     Export:
       Name: LinebotResponseArn
+  LinebotFunctionName:
+    Value: !Ref LinebotFunction
+    Export:
+      Name: LinebotFunctionName
+  
