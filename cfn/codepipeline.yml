@@ -84,7 +84,7 @@ Resources:
               Configuration: 
                 RepositoryName: !ImportValue LinebotRepositoryName
                 BranchName: main
-                PollForSourceChanges: false
+                PollForSourceChanges: true
                 OutputArtifactFormat: CODE_ZIP
               OutputArtifacts:
                 - Name: SourceArtifact
