@@ -30,8 +30,6 @@ def create_item(message_event=None):
     return text
 
 def query_item(message_event=None):
-    mayu_list = os.environ.get('mayu_list')
-    masaya_list = os.environ.get('masaya_list')
     message = message_event['message']['text']
     # If there is a name in the message, query by that name.
     # Otherwise, query by sender's name.
