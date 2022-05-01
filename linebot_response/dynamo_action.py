@@ -16,6 +16,7 @@ access_token = ssm.get_parameter(Name='/linebot/access_token',WithDecryption=Tru
 masawai = ssm.get_parameter(Name='/linebot/user_id',WithDecryption=True)['Parameter']['Value']
 mayu_list = ssm.get_parameter(Name='/linebot/mayu_list')['Parameter']['Value']
 masaya_list = ssm.get_parameter(Name='/linebot/masaya_list')['Parameter']['Value']
+channel_secret = ssm.get_parameter(Name='/linebot/account/channel_secret',WithDecryption=True)['Parameter']['Value']
 
 def create_item(message_event=None):
     name = 'Masaya' if message_event['source']['userId'] == masawai else 'Mayu'

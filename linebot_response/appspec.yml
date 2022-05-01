@@ -1,0 +1,9 @@
+version: 0.0
+resources:
+  - linebot_response:
+      type: "AWS::Lambda::Function"
+      properties:
+        name: "linebot_response"
+        alias: "latest"
+        currentversion: "1"
+        targetversion: "2"

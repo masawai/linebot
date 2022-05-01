@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Provision CodeCommit, CodeBuild, CodePipeline
+
+Parameters: 
+  TemplateCodeCommit:
+    Description: CodeCommit template URL
+    Type: String
+    Default: https://cfn-template-155385059623.s3.ap-northeast-1.amazonaws.com/codecommit.yml
+
+  TemplateCodeBuild:
+    Description: CodeBuild template URL
+    Type: String
+    Default: https://cfn-template-155385059623.s3.ap-northeast-1.amazonaws.com/codebuild.yml
+
+  TemplateCodePipeline:
+    Description: CodePipeline template URL 
+    Type: String
+    Default: https://cfn-template-155385059623.s3.ap-northeast-1.amazonaws.com/codepipeline.yml
+
+  CommonName:
+    Description: Name commonly used by resources
+    Type: String
+
+
+Resources:
+  # CodeCommitの作成
+  CodeCommit:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref TemplateCodeCommit
+      Parameters:
+        CommonNameParameter: !Sub ${CommonName}
+
+  # CodeBuildの作成
+  CodeBuild:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref TemplateCodeBuild
+      Parameters: 
+        CommonNameParameter: !Sub ${CommonName}
+    DependsOn: CodeCommit
+
+  # CodePipelineの作成
+  CodePipeline:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref TemplateCodePipeline
+      Parameters: 
+        CommonNameParameter: !Sub ${CommonName}
+    DependsOn: CodeBuild

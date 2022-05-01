@@ -6,15 +6,13 @@ phases:
       - echo Nothing to do in the install phase...
   pre_build:
     commands:
+      - echo Build completed on `date`
       - echo Nothing to do in the pre_build phase...
   build:
     commands:
       - echo Build started on `date`
-      - zip -r linebot_response.zip ./
-      - aws lambda update-function-code --function-name linebot_response --zip-file fileb://linebot_response.zip
+      - pwd
+      - ./buildspec.sh
   post_build:
     commands:
       - echo Build completed on `date`
-artifacts:
-  files:
-    - linebot_response.zip
