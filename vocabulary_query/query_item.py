@@ -1,3 +1,5 @@
+import time
+
 import boto3
 from notion_client import Client
 
@@ -10,15 +12,14 @@ notion = Client(auth=notion_token)
 
 
 def parse_item(items, res):
-    for result in res['results']:
-        try:
-            item = {}
-            item['Word'] = result['properties']['Word']['title'][0]['plain_text']
-            item['Japanese'] = result['properties']['Japanese']['rich_text'][0]['plain_text']
-            item['User'] = result['properties']['User']['formula']['string']
-            items.append(item)
-        except IndexError:
-            pass
+    items.extend([
+        {
+            'Word' : result['properties']['Word']['title'][0]['plain_text'],
+            'Japanese' : result['properties']['Japanese']['rich_text'][0]['plain_text'],
+        }
+        for result in res['results'] 
+        if result['properties'].get('Word') or result['properties'].get('Japanese')
+        ])
     return items
 
 def query_item(items=[], cnt=0, next_cursor=None):
@@ -34,4 +35,7 @@ def query_item(items=[], cnt=0, next_cursor=None):
     return items
 
 if __name__ == '__main__':
-    query_item()
+    start_time = time.perf_counter()
+    items = query_item()
+    end_time = time.perf_counter()
+    print(end_time - start_time)
