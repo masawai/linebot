@@ -48,7 +48,7 @@ def parse_item(word):
             }]
         },
         'Weblio': {
-            'url': url+word
+            'url': url+word.replace(' ', '+')
         },
     }
     return properties
