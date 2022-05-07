@@ -29,6 +29,10 @@ const shuffle = ([...array]) => {
   return array;
 }
 
+const userFilter = (user) => {
+  
+}
+
 const previousButton = () => {
   isAnswered.value = false;
   index.value -= 1;
@@ -48,13 +52,14 @@ const answerButton = () => {
 </script>
 
 <template>
-  <v-btn block @click="isStarted=true" v-show="!isStarted" >開始</v-btn><br><br>
-  <v-btn @click="data=shuffle(data)" v-show="!isStarted" >シャッフル</v-btn>
+  <button block @click="isStarted=true" v-show="!isStarted" >開始</button><br><br>
+  <button @click="data=shuffle(data)" v-show="!isStarted" >シャッフル</button><br>
+  <button @click="data=shuffle('Masaya')" v-show="!isStarted" >フィルタ</button>
   
   <div v-if="isStarted">
-    <v-btn @click="previousButton()" v-bind:disabled="!index" >前の問題</v-btn>
-    <v-btn @click="nextButton()" v-if="isAnswered" >次の問題</v-btn>
-    <v-btn @click="answerButton()" v-else >答え</v-btn>
+    <button @click="previousButton()" v-bind:disabled="!index" >前の問題</button>
+    <button @click="nextButton()" v-if="isAnswered" >次の問題</button>
+    <button @click="answerButton()" v-else >答え</button>
     <br><br>
     <p>{{ data[index].Word }}</p><br>
     <p v-show="isAnswered">{{ data[index].Japanese }}</p>
