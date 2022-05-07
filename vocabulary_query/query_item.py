@@ -15,6 +15,7 @@ def parse_item(items, res):
             item = {}
             item['Word'] = result['properties']['Word']['title'][0]['plain_text']
             item['Japanese'] = result['properties']['Japanese']['rich_text'][0]['plain_text']
+            item['User'] = result['properties']['User']['formula']['string']
             items.append(item)
         except IndexError:
             pass
