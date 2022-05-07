@@ -21,8 +21,9 @@ def lambda_handler(event, context):
     for message_event in json.loads(event['body'])['events']:
         logger.debug(message_event)
         word = message_event['message']['text']
+        user_id = message_event['source']['userId']
         try:
-            create_item.create_item(word)  
+            create_item.create_item(word, user_id)  
             text = f'{word}を登録したよ'
         except:
             text = '登録でエラーが発生したみたい...'

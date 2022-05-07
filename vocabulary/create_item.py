@@ -20,7 +20,7 @@ def search_weblio(word):
     soup = BeautifulSoup(response.text, 'html.parser')
     return soup
 
-def parse_item(word):
+def parse_item(word, user_id):
     soup = search_weblio(word)
     pronunciation = soup.find(class_='phoneticEjjeDesc').get_text() if soup.find(class_='phoneticEjjeDesc') else ''
     japanese = soup.find(class_='content-explanation ej').get_text().strip()
@@ -47,14 +47,21 @@ def parse_item(word):
                 }
             }]
         },
+        'Line ID': {
+            'rich_text': [{
+                'text': {
+                    'content': user_id
+                }
+            }]
+        },
         'Weblio': {
             'url': url+word.replace(' ', '+')
         },
     }
     return properties
 
-def create_item(word):
-    properties=parse_item(word)
+def create_item(word, user_id):
+    properties=parse_item(word, user_id)
     r = notion.pages.create(
         **{
             'parent': {'database_id' : database_id},
@@ -64,4 +71,4 @@ def create_item(word):
     print(r)
 
 if __name__ == '__main__':
-    create_item(sys.argv[1])
+    create_item(sys.argv[1], sys.argv[2])
