@@ -52,9 +52,9 @@ const answerButton = () => {
 </script>
 
 <template>
-  <button block @click="isStarted=true" v-show="!isStarted" >開始</button><br><br>
-  <button @click="data=shuffle(data)" v-show="!isStarted" >シャッフル</button><br>
-  <button @click="data=shuffle('Masaya')" v-show="!isStarted" >フィルタ</button>
+  <button block @click="isStarted=true" v-show="!isStarted" v-bind:disabled="!data">開始</button><br><br>
+  <button @click="data=shuffle(data)" v-show="!isStarted" v-bind:disabled="!data">シャッフル</button><br>
+  <button @click="data=shuffle('Masaya')" v-show="!isStarted" v-bind:disabled="!data">フィルタ</button>
   
   <div v-if="isStarted">
     <button @click="previousButton()" v-bind:disabled="!index" >前の問題</button>
