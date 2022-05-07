@@ -16,6 +16,7 @@ def parse_item(items, res):
         {
             'Word' : result['properties']['Word']['title'][0]['plain_text'],
             'Japanese' : result['properties']['Japanese']['rich_text'][0]['plain_text'],
+            'User' : result['properties']['User']['formula']['string'],
         }
         for result in res['results'] 
         if result['properties'].get('Word') or result['properties'].get('Japanese')

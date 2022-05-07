@@ -27,11 +27,17 @@ const shuffle = ([...array]) => {
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
-}
+};
 
-const userFilter = (user) => {
-  
-}
+const userFilter = (data, user) => {
+  let filtered_data = [];
+  console.log(data);
+  data.forEach((d) => {
+    if (user == d.User){
+      filtered_data.push(d);
+  }});
+  return filtered_data;
+};
 
 const previousButton = () => {
   isAnswered.value = false;
@@ -53,8 +59,9 @@ const answerButton = () => {
 
 <template>
   <button block @click="isStarted=true" v-show="!isStarted" v-bind:disabled="!data">開始</button><br><br>
-  <button @click="data=shuffle(data)" v-show="!isStarted" v-bind:disabled="!data">シャッフル</button><br>
-  <button @click="data=shuffle('Masaya')" v-show="!isStarted" v-bind:disabled="!data">フィルタ</button>
+  <button @click="data=shuffle(data)" v-show="!isStarted" v-bind:disabled="!data">シャッフル</button>
+  <button @click="data=userFilter(data, 'Masaya')" v-show="!isStarted" v-bind:disabled="!data">Masaya のデータでフィルタ</button>
+  <button @click="data=userFilter(data, 'Mayu')" v-show="!isStarted" v-bind:disabled="!data">Mayu のデータでフィルタ</button>
   
   <div v-if="isStarted">
     <button @click="previousButton()" v-bind:disabled="!index" >前の問題</button>
