@@ -55,6 +55,19 @@ const answerButton = () => {
   isAnswered.value = true;
   console.log(isAnswered);
 };
+
+document.addEventListener('keydown', keydown_ivent);
+function keydown_ivent(e) {
+	switch (e.key) {
+		case 'ArrowLeft':
+			previousButton();
+			break;
+		case 'ArrowRight':
+		  isAnswered.value == true ? nextButton():
+		  answerButton();
+			break;
+	}
+}
 </script>
 
 <template>
