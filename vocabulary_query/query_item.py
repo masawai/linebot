@@ -19,7 +19,7 @@ def parse_item(items, res):
             'User' : result['properties']['User']['formula']['string'],
         }
         for result in res['results'] 
-        if result['properties'].get('Word') or result['properties'].get('Japanese')
+        if result['properties'].get('Word') and result['properties'].get('Japanese')
         ])
     return items
 
