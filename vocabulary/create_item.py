@@ -15,16 +15,17 @@ database_id: str = ssm.get_parameter(Name='/linebot/vocabulary/database_id',With
 notion = Client(auth=notion_token)
 url='https://ejje.weblio.jp/content/'
 
-def search_weblio(word):
-    response = requests.get(url+word)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    return soup
-
-def parse_item(word, user_id):
+def get_info(word):
+    def search_weblio(word):
+        response = requests.get(url+word)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        return soup
     soup = search_weblio(word)
     pronunciation = soup.find(class_='phoneticEjjeDesc').get_text() if soup.find(class_='phoneticEjjeDesc') else ''
     japanese = soup.find(class_='content-explanation ej').get_text().strip()
-    
+    return pronunciation, japanese
+
+def create_item(word, pronunciation, japanese, user_id):
     properties = {
         'Word': {
             'title': [{
@@ -58,10 +59,6 @@ def parse_item(word, user_id):
             'url': url+word.replace(' ', '+')
         },
     }
-    return properties
-
-def create_item(word, user_id):
-    properties=parse_item(word, user_id)
     r = notion.pages.create(
         **{
             'parent': {'database_id' : database_id},
@@ -71,4 +68,7 @@ def create_item(word, user_id):
     print(r)
 
 if __name__ == '__main__':
-    create_item(sys.argv[1], sys.argv[2])
+    word = sys.argv[1]
+    user_id = sys.argv[2]
+    pronunciation, japanese = get_info(word)
+    create_item(word, pronunciation, japanese, user_id)
