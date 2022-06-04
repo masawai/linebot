@@ -21,11 +21,12 @@ def get_info(word):
         soup = BeautifulSoup(response.text, 'html.parser')
         return soup
     soup = search_weblio(word)
-    pronunciation = soup.find(class_='phoneticEjjeDesc').get_text() if soup.find(class_='phoneticEjjeDesc') else ''
+    pronunciation_text = soup.find(class_='phoneticEjjeDesc').get_text() if soup.find(class_='phoneticEjjeDesc') else ''
+    pronunciation_audio = soup.find(class_='contentAudio').source.attrs['src'] if soup.find(class_='phoneticEjjeDesc') else ''
     japanese = soup.find(class_='content-explanation ej').get_text().strip()
-    return pronunciation, japanese
+    return pronunciation_text, pronunciation_audio, japanese
 
-def create_item(word, pronunciation, japanese, user_id):
+def create_item(word, pronunciation_text, pronunciation_audio, japanese, user_id):
     properties = {
         'Word': {
             'title': [{
@@ -37,7 +38,7 @@ def create_item(word, pronunciation, japanese, user_id):
         'Pronunciation': {
             'rich_text': [{
                 'text': {
-                    'content': pronunciation
+                    'content': pronunciation_text
                 }
             }]
         },
@@ -58,6 +59,9 @@ def create_item(word, pronunciation, japanese, user_id):
         'Weblio': {
             'url': url+word.replace(' ', '+')
         },
+        'Pronunciation Audio': {
+            'url': pronunciation_audio
+        },
     }
     r = notion.pages.create(
         **{
@@ -70,5 +74,5 @@ def create_item(word, pronunciation, japanese, user_id):
 if __name__ == '__main__':
     word = sys.argv[1]
     user_id = sys.argv[2]
-    pronunciation, japanese = get_info(word)
-    create_item(word, pronunciation, japanese, user_id)
+    pronunciation_text, pronunciation_audio, japanese = get_info(word)
+    create_item(word, pronunciation_text, pronunciation_audio, japanese, user_id)

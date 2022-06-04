@@ -23,8 +23,8 @@ def lambda_handler(event, context):
         word = message_event['message']['text']
         user_id = message_event['source']['userId']
         try:
-            pronunciation, japanese = create_item.get_info(word)
-            create_item.create_item(word, pronunciation, japanese, user_id)
+            pronunciation_text, pronunciation_audio, japanese = create_item.get_info(word)
+            create_item.create_item(word, pronunciation_text, pronunciation_audio, japanese, user_id)
             text = f'{word}を登録したよ\n\n{japanese}'
         except:
             text = '登録でエラーが発生したみたい...'
