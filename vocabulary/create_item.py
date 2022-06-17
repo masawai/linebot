@@ -22,7 +22,7 @@ def get_info(word):
         return soup
     soup = search_weblio(word)
     pronunciation_text = soup.find(class_='phoneticEjjeDesc').get_text() if soup.find(class_='phoneticEjjeDesc') else ''
-    pronunciation_audio = soup.find(class_='contentAudio').source.attrs['src'] if soup.find(class_='phoneticEjjeDesc') else ''
+    pronunciation_audio = soup.find(class_='contentAudio').source.attrs['src'] if soup.find(class_='phoneticEjjeDesc') else None
     japanese = soup.find(class_='content-explanation ej').get_text().strip()
     return pronunciation_text, pronunciation_audio, japanese
 
